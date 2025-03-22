@@ -4,13 +4,47 @@ import pg from "pg";
 
 const app = express();
 const { Client } = pg;
-const db = new Client({
-    user: "postgres",
-    host: "localhost",
-    password: "Ejc9c123",
-    port: 5432,
-    database: "postgres"
-});
+const config = {
+    user: "avnadmin",
+    password: "AVNS_4WiDcqPUw8y4ZHSsiB-",
+    host: "pg-cc4347f-keeper-app.j.aivencloud.com",
+    port: 17894,
+    database: "defaultdb",
+    ssl: {
+        rejectUnauthorized: true,
+        ca: `-----BEGIN CERTIFICATE-----
+MIIETTCCArWgAwIBAgIUQwjNxRJvACQ2eFdOVYZsXt2Zai8wDQYJKoZIhvcNAQEM
+BQAwQDE+MDwGA1UEAww1MTMzYTMyOWUtZDMxYS00MjkyLWI3NjEtN2NlZTc4NWNj
+ZWRlIEdFTiAxIFByb2plY3QgQ0EwHhcNMjUwMzIyMjA1NDAxWhcNMzUwMzIwMjA1
+NDAxWjBAMT4wPAYDVQQDDDUxMzNhMzI5ZS1kMzFhLTQyOTItYjc2MS03Y2VlNzg1
+Y2NlZGUgR0VOIDEgUHJvamVjdCBDQTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCC
+AYoCggGBALVOyOwAPEnSlmXz4OoRRWrnClrDSBstiqddWFckbZRIbhUnsMhMRxeJ
+XBU5tHCtmxrGWK01I2rJNxWxY7Wc/NrBKkwZDTlBYWpx6eGnODp+MDHKm6awAiN6
+2vaWgEefHkmZHN10oHP0BZi956cbcc8Gh5spJ/nN2gV1VXcn+5aY7Rz0p1He59Np
+Avm+ldPwXAAywtc9eraSYV5hjayAkFP5Ph8XvWM+IQ5vYRGnydhTyYzX7Wbtbdly
+nrqW7jWWtZ/xm9UnQ3sJVZ5LOV62x5UXN67fJ53yvuBRmPCM1fCnuvxPCVuNwzUO
+Ze6xOpo449gf4l+0Ct5+SqEMsrQR83JTzx8eeKzTImv7Y6Q2LjdJ7qpeZhrfW7Qv
+yNI0KaKcRh+Deu7xvus093A9enaMrfjENbIVALsSf0qc7IweXbGDVberOkKl6Ymc
+BDkQEkRxhtLf3nucFNUNINp27d4IecY/lB3AzCP59MXf8E6szyfwi2wZ6uxd8l23
+BYpHgRB5CQIDAQABoz8wPTAdBgNVHQ4EFgQUKjuvfYfaLYrZdX1ZYmr0j+9mZhww
+DwYDVR0TBAgwBgEB/wIBADALBgNVHQ8EBAMCAQYwDQYJKoZIhvcNAQEMBQADggGB
+AB3eDOA6/g5wt5YDgofyE10CRvEXkqxJ8gSAC5S8Gle0wB7878kQjE5XsKAqQcTl
++4VUNWudMyAImqLShQda7E1sAE/3Re4fOWXSozN142WHvr5JZEODmlZfNMJkrQY3
+StTvfXf86SZSIXCucqY8TVYaPvx3Ga/jqiN1/7FujSMup/GjazgroQ18N4se+OG3
++h6czn5RTTG6/+3gQABB65F1/0TJlMtKcsH+an3/lBVDj5xJqjHHFUq474jvLNba
+S4GKmW4SbQNnclyEF6KF2WWD7M6t0jdZ1pfPXdhHGSsO5PqsdTY3Cf5nVGt1a79H
+64d4px3VNRN282pz15ahURgJzcGMkanXhdMAO5jKEHLCGGkBqGxGHAZYNzxWSmFB
+T9PJ61gdZvC2EMo5NIK7HZ8K9JQH5sB3VcqHdMPbvx6yoMabhuLQvyITXB6qKxlr
+IIXhxI0Ji+BqQEl+qvCRgfikCL0u4mhr62j4YMNkBHwqWdAbJa4cEnxiVytYSMwP
+QA==
+-----END CERTIFICATE-----`,
+    },
+};
+
+const db = new Client(config);
+
+
+
 
 db.connect();
 
@@ -21,8 +55,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Get all notes
-app.get("/", async (req, res) => {
+
+app.get("/api", async (req, res) => {
     try {
         const result = await db.query("SELECT * FROM notes");
         res.json(result.rows);
