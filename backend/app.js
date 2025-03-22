@@ -56,7 +56,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 
-app.get("/api", async (req, res) => {
+app.get("/", async (req, res) => {
     try {
         const result = await db.query("SELECT * FROM notes");
         res.json(result.rows);
