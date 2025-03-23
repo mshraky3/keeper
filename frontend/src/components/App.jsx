@@ -6,20 +6,21 @@ import CreateArea from "./CreateArea";
 import axios from "axios"
 
 
-const endpoint = "https://keeper-backend-git-main-mshraky3s-projects.vercel.app"
 
 
 function App() {
+  const endpoint = "http://localhost:3000/"
+
+
 
   const [note_list, set_list] = useState([])
 
   async function get_data() {
     try {
       const res = await axios.get(endpoint)
-      console.log(res.data)
       set_list(res.data)
     } catch (err) {
-      console.error("err")
+      console.log("err")
     }
 
   }
@@ -28,7 +29,8 @@ function App() {
     const res = await axios.post(endpoint, data);
   }
   async function deleteData(data) {
-    const res = await axios.post(endpoint + "/delete", { data });
+    const res = await axios.post((endpoint + "delete"), { data });
+    console.log(res)
   }
 
   useEffect(() => {
