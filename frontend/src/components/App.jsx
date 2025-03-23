@@ -6,7 +6,7 @@ import CreateArea from "./CreateArea";
 import axios from "axios"
 
 
-const endpoint = "https://keeper-server-nine.vercel.app/"
+const endpoint = "https://keeper-server-nine.vercel.app"
 
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
     const res = await axios.post(endpoint, data);
   }
   async function deleteData(data) {
-    const res = await axios.post(endpoint + "delete", { data });
+    const res = await axios.post(endpoint + "/delete", { data });
   }
 
   useEffect(() => {
