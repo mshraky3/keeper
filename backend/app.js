@@ -50,6 +50,7 @@ db.connect();
 
 const corsOptions = {
     origin: [
+        "*",
         "http://localhost:5173", // Local development
         "https://keeper-frontend-ep4r0ej07-mshraky3s-projects.vercel.app",
         "https://keeper-frontend-h2mpbabpm-mshraky3s-projects.vercel.app" // Production frontend
