@@ -49,7 +49,11 @@ const db = new Client(config);
 db.connect();
 
 const corsOptions = {
-    origin: ["http://localhost:5173"]
+    origin: [
+        "http://localhost:5173", // Local development
+        "https://keeper-frontend-h2mpbabpm-mshraky3s-projects.vercel.app" // Production frontend
+    ],
+    methods: ["GET", "POST", "DELETE"]
 };
 
 app.use(cors(corsOptions));
