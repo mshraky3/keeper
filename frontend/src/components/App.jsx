@@ -6,7 +6,7 @@ import CreateArea from "./CreateArea";
 import axios from "axios"
 
 
-const endpoint = "https://keeper-server-nine.vercel.app"
+const endpoint = "https://keeper-backend-git-main-mshraky3s-projects.vercel.app"
 
 
 function App() {
