@@ -44,16 +44,11 @@ QA==
 const db = new Client(config);
 
 
-
-
 db.connect();
-
 const corsOptions = {
-    origin: [
-        "*",
-        "https://keeper-frontend-gamma.vercel.app"
-    ],
-    methods: ["GET", "POST", "DELETE"]
+    origin: '*',
+    methods: '*',
+    allowedHeaders: '*',
 };
 
 app.use(cors(corsOptions));
@@ -88,8 +83,9 @@ app.post("/", async (req, res) => {
 
 // Delete a note
 app.post("/delete", async (req, res) => {
-    const { id } = req.body;
+    const  id  = req.body.data;
     try {
+        
         const result = await db.query("DELETE FROM notes WHERE id = $1", [id]);
         if (result.rowCount === 0) {
             return res.status(404).send("Note not found");
