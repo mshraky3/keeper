@@ -3,53 +3,80 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
-import axios from "axios"
-
-
-
+import axios from "axios";
 
 function App() {
-  const endpoint = "http://localhost:3000/"
+  const localEndpoint = "http://localhost:3000/";
+  const remoteEndpoint = "https://keeper-api-three.vercel.app/";
 
+  const [note_list, set_list] = useState([]);
 
+  async function fetchData(endpoint) {
+    try {
+      const res = await axios.get(endpoint);
+      set_list(res.data);
+    } catch (err) {
+      console.error(`Error fetching data from ${endpoint}:`, err);
+      throw err; // Re-throw the error to be caught by the caller
+    }
+  }
 
-  const [note_list, set_list] = useState([])
+  async function postData(data, endpoint) {
+    try {
+      const res = await axios.post(endpoint, data);
+      return res;
+    } catch (err) {
+      console.error(`Error posting data to ${endpoint}:`, err);
+      throw err; // Re-throw the error to be caught by the caller
+    }
+  }
+
+  async function deleteData(data, endpoint) {
+    try {
+      const res = await axios.post(`${endpoint}delete`, { data });
+      console.log(res);
+      return res;
+    } catch (err) {
+      console.error(`Error deleting data from ${endpoint}:`, err);
+      throw err; // Re-throw the error to be caught by the caller
+    }
+  }
 
   async function get_data() {
     try {
-      const res = await axios.get(endpoint)
-      set_list(res.data)
+      await fetchData(localEndpoint);
     } catch (err) {
-      console.log("err")
+      console.log("Falling back to remote endpoint");
+      await fetchData(remoteEndpoint);
     }
-
   }
-
-  async function postData(data) {
-    const res = await axios.post(endpoint, data);
-  }
-  async function deleteData(data) {
-    const res = await axios.post((endpoint + "delete"), { data });
-    console.log(res)
-  }
-
-  useEffect(() => {
-    get_data()
-  }, [])
 
   async function add_note(event) {
     event.preventDefault();
     const newNote = { title: event.target.title.value, content: event.target.content.value, id: (note_list.length + 1) };
-    set_list([...note_list, newNote])
-    postData(newNote);
-    event.target.reset()
+    set_list([...note_list, newNote]);
+    try {
+      await postData(newNote, localEndpoint);
+    } catch (err) {
+      console.log("Falling back to remote endpoint for posting data");
+      await postData(newNote, remoteEndpoint);
+    }
+    event.target.reset();
   }
 
-  async function delete_note(event) {
-    set_list(note_list.filter((index) => { return index.id !== event }))
-    deleteData(event);
+  async function delete_note(id) {
+    set_list(note_list.filter((note) => note.id !== id));
+    try {
+      await deleteData({ id }, localEndpoint);
+    } catch (err) {
+      console.log("Falling back to remote endpoint for deleting data");
+      await deleteData({ id }, remoteEndpoint);
+    }
   }
 
+  useEffect(() => {
+    get_data();
+  }, []);
 
   return (
     <div>
